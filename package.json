@@ -1,0 +1,27 @@
+{
+  "name": "education",
+  "version": "1.0.0",
+  "description": "## Docs",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@linew.dev:linew-dev/education.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "cypress": "^5.0.0",
+    "cypress-intellij-reporter": "0.0.4"
+  },
+  "dependencies": {
+    "cypress-file-upload": "^4.0.7",
+    "vue-circular-count-down-timer": "^1.0.4"
+  }
+}

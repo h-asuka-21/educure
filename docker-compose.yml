@@ -1,0 +1,83 @@
+version: '3'
+volumes:
+  ignore:
+services:
+  # web:
+  #   build: ./
+  #   volumes:
+  #     - ./php//php.ini:/usr/local/etc/php/php.ini
+  #     - ./html:/var/www/app
+  #   ports:
+  #     - 8080:80
+  php:
+    container_name: php
+    build:
+      context: .
+      dockerfile: ./docker/php/Dockerfile
+    environment:
+      - PHP_IDE_CONFIG=serverName=docker.stlaun.local
+      - XDEBUG_CONFIG=remote_host=host.docker.internal
+      - APP_URL=http://127.0.0.1
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_DATABASE_NAME=stlaun
+      - DB_USERNAME=test
+      - DB_PASSWORD=test
+      - TEST_DB_DATABASE=test
+      - TEST_DB_USERNAME=test
+      - TEST_DB_PASSWORD=test
+      - MAIL_DRIVER=smtp
+      - MAIL_HOST=smtp.mailtrap.io
+      - MAIL_PORT=2525
+      - MAIL_USERNAME=null
+      - MAIL_PASSWORD=null
+      - MAIL_ENCRYPTION=null
+      - JWT_SECRET=Lu4szmSWByx8zG8hjIiRqKAWjPslCscb6x5BjCiVM4RbO9kmFsDfNrq3KIXrSHBM
+      - TZ=Asia/Tokyo
+    volumes:
+      - ./php:/var/www/app
+    working_dir: /var/www/app
+    tty: true
+    ports:
+      - 9000:9000
+    depends_on:
+      - db
+  nuxt:
+    container_name: nuxt
+    build:
+      context: .
+      dockerfile: ./docker/nuxt/Dockerfile
+    environment:
+      - API_URL=http://127.0.0.1/api
+      - BASE_URL=http://127.0.0.1
+    volumes:
+      - ignore:/var/www/nuxt/.nuxt
+      - ./nuxt:/var/www/nuxt
+  nginx:
+    container_name: nginx
+    build:
+      context: .
+      dockerfile: ./docker/nginx/Dockerfile
+    volumes:
+      - ./docker/nginx/conf/default.conf:/etc/nginx/conf.d/default.conf:cached
+      - ./php/public:/var/www/app/public:cached
+      - ./php/storage:/var/www/app/storage:cached
+    ports:
+      - 80:80
+    depends_on:
+      - php
+  db:
+    image: mysql:5.7
+    platform: linux/amd64
+    container_name: db
+    environment:
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=root
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=stlaun
+      - TZ='Asia/Tokyo'
+    volumes:
+      - ./mysql:/var/lib/mysql:cached
+      - ./docker/db:/docker-entrypoint-initdb.d
+    ports:
+      - 3306:3306

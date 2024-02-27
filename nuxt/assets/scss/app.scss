@@ -1,0 +1,30 @@
+@font-face {
+    font-family: 'mgenplus';
+    src: url('../font/rounded-mgenplus-1pp-regular.ttf') format('truetype');
+    font-weight: normal;
+}
+@font-face {
+    font-family: 'mgenplus';
+    src: url('../font/rounded-mgenplus-1pp-medium.ttf') format('truetype');
+    font-weight: bold;
+}
+body{
+    font-family: mgenplus!important;
+}
+.v-application{
+    font-family: mgenplus!important;
+    .text-h1,.text-h2,.text-h3,.text-h4,.text-h5,.text-h6,
+    .text-subtitle-1,.subtitle,.subtitle-1,.text-subtitle-2,.subtitle-2,
+    .title,.body-1,.body-2,.button,.caption,.overline{
+        font-family: mgenplus!important;
+    }
+}
+.col{
+    &.bordered{
+        border: thin solid rgba(0, 0, 0, 0.12);
+        border-radius: 4px;
+    }
+}
+.v-card__title{
+    font-weight: bold;
+}
